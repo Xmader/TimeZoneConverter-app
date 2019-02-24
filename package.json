@@ -1,0 +1,22 @@
+{
+  "name": "timezoneconverter-app",
+  "private": true,
+  "version": "0.1.0",
+  "main": "main.js",
+  "homepage": "https://github.com/Xmader/TimeZoneConverter-app#readme",
+  "bugs": {
+    "url": "https://github.com/Xmader/TimeZoneConverter-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xmader/TimeZoneConverter-app.git"
+  },
+  "author": "Xmader",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "~3.0.15"
+  },
+  "scripts": {
+    "dev": "electron ."
+  }
+}
