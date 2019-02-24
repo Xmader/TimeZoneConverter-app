@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html ng-app="wcc">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Time Zone Converter and World Clock</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+
+    <link rel="stylesheet" href="assets/css/all.css?1.5"/>
+</head>
+
+<body ng-controller="wccController" ontouchstart="" class="ui-theme-{{ui_theme}}">
+
+<!--main app-->
+<div class="colored-block ng-cloak-hid">
+
+    <div id="colored-block"></div>
+
+    <div class="colored-block__aligner">
+
+        <!--site block-->
+        <div class="site-block">
+            <!--left aside-->
+            <div class="site-aside" style="display:none;">
+                <ul class="site-aside-colors">
+                    <li class="site-aside-colors__item">
+                        <div class="time-n-day__color"></div>
+                        <span class="text">Business time</span>
+                    </li>
+                    <li class="site-aside-colors__item site-aside-colors__item-yellow">
+                        <div class="time-n-day__color"></div>
+                        <span class="text">Business overtime</span>
+                    </li>
+                    <li class="site-aside-colors__item site-aside-colors__item-red">
+                        <div class="time-n-day__color"></div>
+                        <span class="text">Personal time</span>
+                    </li>
+                    <li class="site-aside-colors__item site-aside-colors__item-moon">
+                        <div class="time-n-day__color">
+                            <svg width="12px" height="12px" viewBox="0 0 10 10" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <defs></defs>
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g transform="translate(-230.000000, -50.000000)" fill="#cbd6e2">
+                                        <g transform="translate(230.000000, 50.000000)">
+                                            <path d="M-3.22486482e-12,6.40525024 C0.696443627,8.32843121 2.53905428,9.70262512 4.70262512,9.70262512 C7.46404887,9.70262512 9.70262512,7.46404887 9.70262512,4.70262512 C9.70262512,2.53905428 8.32843121,0.696443627 6.40525024,-1.56541446e-14 C6.59769637,0.531426716 6.70262512,1.10477221 6.70262512,1.70262512 C6.70262512,4.46404887 4.46404887,6.70262512 1.70262512,6.70262512 C1.10477221,6.70262512 0.531426716,6.59769637 1.92285077e-12,6.40525024 Z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <span class="text">Sleeping time</span>
+                    </li>
+                </ul>
+            </div>
+            <!--/left aside-->
+
+            <!--main app-->
+            <div class="site" ng-class="{'add-shown':!main_view}">
+
+                <!--app header-->
+                <div class="app-header"
+                     ng-class="{'app-header_empty':!cities.length}">
+                    <div class="range-val" ng-class="{'range-val-empty':range==0}">
+                        <div class="range-val__amm" ng-click="reset_range(true, true)">
+
+                            {{range | time_shift}}
+
+                            <svg width="7px" height="7px" viewBox="0 0 7 7" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g class="x-icon" transform="translate(-210.000000, -50.000000)" fill="#ffffff">
+                                        <g transform="translate(210.000000, 50.000000)">
+                                            <path d="M4.79797323,3.49831102 L6.68702082,1.60926343 C7.07929587,1.21698838 7.08268567,0.584374647 6.68662419,0.18831317 L6.80830887,0.309997852 C6.41581477,-0.0824962527 5.77890724,-0.0819473966 5.38735861,0.309601227 L3.49831102,2.19864882 L1.60926343,0.309601227 C1.21698838,-0.082673828 0.584374647,-0.0860636249 0.18831317,0.309997852 L0.309997852,0.18831317 C-0.0824962527,0.580807275 -0.0819473966,1.21771481 0.309601227,1.60926343 L2.19864882,3.49831102 L0.309601227,5.38735861 C-0.082673828,5.77963367 -0.0860636249,6.4122474 0.309997852,6.80830887 L0.18831317,6.68662419 C0.580807275,7.0791183 1.21771481,7.07856944 1.60926343,6.68702082 L3.49831102,4.79797323 L5.38735861,6.68702082 C5.77963367,7.07929587 6.4122474,7.08268567 6.80830887,6.68662419 L6.68662419,6.80830887 C7.0791183,6.41581477 7.07856944,5.77890724 6.68702082,5.38735861 L4.79797323,3.49831102 Z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="pep_track" id="pep_track">
+                        <div class="pep_wrap" id="pep_wrap">
+                            <div class="pep" id="pep">&nbsp;</div>
+                        </div>
+                    </div>
+
+                    <div class="after" ng-class="{'active': ui_theme==='white'}"></div>
+                    <div class="before" ng-class="{'active': ui_theme==='white'}"></div>
+
+                    <div class="after after_graphite" ng-class="{'active': ui_theme==='graphite'}"></div>
+                    <div class="before before_graphite" ng-class="{'active': ui_theme==='graphite'}"></div>
+
+                    <div class="after after_black" ng-class="{'active': ui_theme==='black'}"></div>
+                    <div class="before before_black" ng-class="{'active': ui_theme==='black'}"></div>
+                </div>
+                <!--/app header-->
+                <!--main content-->
+                <div class="app-content" ng-class="{'app-content_empty':!cities.length}">
+
+                    <span ng-if="!cities.length" class="app-content_empty-text">Use Plus Button to Add a City</span>
+
+                    <div class="sortable_wrap" style="height: {{cities.length*item_height}}px;"
+                         ui-sortable="sortableOptions"
+                         ng-model="cities">
+
+                        <div class="cities-list__item {{city | availibility : moment : range}}"
+                             ng-repeat="city in cities track by $index">
+
+                            <div class="delete-city" ng-click="delete_item($index)">
+                                <svg width="12px" height="7px" viewBox="0 0 7 7" version="1.1"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g class="del-icon" transform="translate(-210.000000, -50.000000)"
+                                           fill="#000000">
+                                            <g transform="translate(210.000000, 50.000000)">
+                                                <path d="M4.79797323,3.49831102 L6.68702082,1.60926343 C7.07929587,1.21698838 7.08268567,0.584374647 6.68662419,0.18831317 L6.80830887,0.309997852 C6.41581477,-0.0824962527 5.77890724,-0.0819473966 5.38735861,0.309601227 L3.49831102,2.19864882 L1.60926343,0.309601227 C1.21698838,-0.082673828 0.584374647,-0.0860636249 0.18831317,0.309997852 L0.309997852,0.18831317 C-0.0824962527,0.580807275 -0.0819473966,1.21771481 0.309601227,1.60926343 L2.19864882,3.49831102 L0.309601227,5.38735861 C-0.082673828,5.77963367 -0.0860636249,6.4122474 0.309997852,6.80830887 L0.18831317,6.68662419 C0.580807275,7.0791183 1.21771481,7.07856944 1.60926343,6.68702082 L3.49831102,4.79797323 L5.38735861,6.68702082 C5.77963367,7.07929587 6.4122474,7.08268567 6.80830887,6.68662419 L6.68662419,6.80830887 C7.0791183,6.41581477 7.07856944,5.77890724 6.68702082,5.38735861 L4.79797323,3.49831102 Z"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <div class="name-n-shift">
+                                <div class="name-n-shift__name" title="{{city | get_second_name}}"
+                                     ng-class="{'name-n-shift__name_shifted':time_format=='am/pm'}">
+                                    {{city | get_name}}
+                                    <span class="warn-notify__wrap"
+                                          ng-bind-html="city | get_warning : detected_city : range"></span>
+                                </div>
+                                <div class="name-n-shift__shift">{{city | get_range : detected_city : range}}</div>
+                            </div>
+
+                            <div class="time-n-day" ng-class="{'time-n-day__time_shifted':time_format=='am/pm'}">
+                                <div class="time-n-day__time"
+                                     ng-bind-html="city | time_in_zone : moment : range : time_format"></div>
+                                <div class="time-n-day__day">
+                                    <span class="time-n-day__day-val">{{city | date : moment : range}}</span>
+                                    <span class="time-n-day__color"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--/main content-->
+
+                <div class="add-button" ng-click="toggleAddScreen()">
+                    <svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                         xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g class="fill_white_svg" transform="translate(-150.000000, -50.000000)" fill="#000000">
+                                <g transform="translate(150.000000, 50.000000)">
+                                    <path d="M10,7 L10,1.99077797 C10,1.44358641 9.55733967,1 9.00104344,1 L7.99895656,1 C7.44724809,1 7,1.45097518 7,1.99077797 L7,7 L1.99077797,7 C1.44358641,7 1,7.44266033 1,7.99895656 L1,9.00104344 C1,9.55275191 1.45097518,10 1.99077797,10 L7,10 L7,15.009222 C7,15.5564136 7.44266033,16 7.99895656,16 L9.00104344,16 C9.55275191,16 10,15.5490248 10,15.009222 L10,10 L15.009222,10 C15.5564136,10 16,9.55733967 16,9.00104344 L16,7.99895656 C16,7.44724809 15.5490248,7 15.009222,7 L10,7 Z"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+
+                <!--add city layout-->
+                <div class="add-view">
+
+                    <form class="search-form" name="search_form">
+                        <span class="search-form__cancel" ng-click="toggleAddScreen()">Cancel</span>
+                        <input class="search-form__input" required id="search-form__input"
+                               ng-keyup="cancelBubble($event)"
+                               ng-keydown="navigateSearch($event)"
+                               ng-model="search_form__input"
+                               type="text"
+                               placeholder="Enter city name">
+                        <div ng-show="search_form__input.length" ng-click="resetSearch()" class="search-form__reset">
+                            <svg width="7px" height="7px" viewBox="0 0 7 7" version="1.1"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g class="x-icon" transform="translate(-210.000000, -50.000000)" fill="#ffffff">
+                                        <g transform="translate(210.000000, 50.000000)">
+                                            <path d="M4.79797323,3.49831102 L6.68702082,1.60926343 C7.07929587,1.21698838 7.08268567,0.584374647 6.68662419,0.18831317 L6.80830887,0.309997852 C6.41581477,-0.0824962527 5.77890724,-0.0819473966 5.38735861,0.309601227 L3.49831102,2.19864882 L1.60926343,0.309601227 C1.21698838,-0.082673828 0.584374647,-0.0860636249 0.18831317,0.309997852 L0.309997852,0.18831317 C-0.0824962527,0.580807275 -0.0819473966,1.21771481 0.309601227,1.60926343 L2.19864882,3.49831102 L0.309601227,5.38735861 C-0.082673828,5.77963367 -0.0860636249,6.4122474 0.309997852,6.80830887 L0.18831317,6.68662419 C0.580807275,7.0791183 1.21771481,7.07856944 1.60926343,6.68702082 L3.49831102,4.79797323 L5.38735861,6.68702082 C5.77963367,7.07929587 6.4122474,7.08268567 6.80830887,6.68662419 L6.68662419,6.80830887 C7.0791183,6.41581477 7.07856944,5.77890724 6.68702082,5.38735861 L4.79797323,3.49831102 Z"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </form>
+
+                    <ul class="searched-list" id="searched-list">
+                        <li class="searched-list__item"
+                            ng-class="{'searched-list__item_active':city.selected}"
+                            ng-mouseover="setAsActive(city)"
+                            ng-mouseleave="unchooseActive()"
+                            ng-click="chooseCity()"
+                            ng-repeat="city in searched_array">
+                            <div class="searched-list__city">
+                                <div class="searched-list__over">{{city.value_spaced_city}}</div>
+                            </div>
+                            <div
+                                    class="searched-list__country">
+                                <div class="searched-list__over">{{city.value_spaced_country
+                                    }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="no_results" ng-if="!searched_array.length && search_form__input">Not Found</div>
+                </div>
+                <!--/add city layout-->
+                <div class="scroll-me" ng-if="cities.length && main_view && tip_appearance"></div>
+            </div>
+            <!--/main app-->
+
+            <!--right aside-->
+            <div class="site-aside site-aside__right" style="display:none;">
+
+                Color Theme
+
+                <div class="theme_switcher">
+                    <div
+                            class="theme_switcher__item"
+                            ng-click="ui_theme!=='black' && toggle_theme('black')"
+                            ng-class="{'active':ui_theme==='black'}"
+                    >
+                        Black
+                    </div>
+                    <div
+                            class="theme_switcher__item"
+                            ng-click="ui_theme!=='graphite' && toggle_theme('graphite')"
+                            ng-class="{'active':ui_theme==='graphite'}"
+                    >
+                        Graphite
+                    </div>
+                    <div
+                            class="theme_switcher__item"
+                            ng-click="ui_theme!=='white' && toggle_theme('white')"
+                            ng-class="{'active':ui_theme==='white'}"
+                    >
+                        White
+                    </div>
+                </div>
+
+                <!-- bankruptcy check -->
+                <div class="checkbox-group">
+                    <input type="checkbox"
+                           id="time-format"
+                           ng-model="time_format_check"
+                           ng-change="toggle_time_format()">
+                    <label class="input-block__label" for="time-format">
+                        24-Hour Clock
+                        <svg class="after" width="18px" height="18px" viewBox="0 0 18 18" version="1.1"
+                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                            <defs></defs>
+                            <g id="Web-App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
+                               opacity="0.300000012">
+                                <path d="M6.06066017,7.93933983 C5.47487373,7.35355339 4.52512627,7.35355339 3.93933983,7.93933983 C3.35355339,8.52512627 3.35355339,9.47487373 3.93933983,10.0606602 L6.93933983,13.0606602 C7.52512627,13.6464466 8.47487373,13.6464466 9.06066017,13.0606602 L15.0606602,7.06066017 C15.6464466,6.47487373 15.6464466,5.52512627 15.0606602,4.93933983 C14.4748737,4.35355339 13.5251263,4.35355339 12.9393398,4.93933983 L8,9.87867966 L6.06066017,7.93933983 Z"
+                                      id="Path-3-Copy" fill="#000000" fill-rule="nonzero"></path>
+                            </g>
+                        </svg>
+                    </label>
+                </div>
+                <!-- /bankruptcy check -->
+
+            </div>
+            <!--/right aside-->
+
+
+        </div>
+        <!--/site block-->
+
+    </div>
+</div>
+<!--/main app-->
+
+<script src="./index.js"></script>
+
+</body>
+
+</html>
